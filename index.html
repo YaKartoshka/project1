@@ -1,64 +1,73 @@
 <!DOCTYPE html>
-<html lang="ru">
+<html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Ерасыл — Мои хобби</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            background-color: #f2f2f2;
-            color: #333;
-            margin: 0;
-            padding: 0;
-        }
-        header {
-            background-color: #0080ff;
-            color: white;
-            padding: 20px;
-            text-align: center;
-        }
-        main {
-            padding: 20px;
-        }
-        section {
-            margin-bottom: 30px;
-        }
-        h2 {
-            color: #004080;
-        }
-        footer {
-            background-color: #ddd;
-            text-align: center;
-            padding: 10px;
-        }
-    </style>
+  <meta charset="UTF-8">
+  <title>Форма отправки данных</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      padding: 40px;
+      background: #f2f2f2;
+    }
+    form {
+      background: white;
+      padding: 20px;
+      border-radius: 8px;
+      max-width: 400px;
+      margin: auto;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+    }
+    input, button {
+      width: 100%;
+      padding: 10px;
+      margin-top: 10px;
+      font-size: 16px;
+    }
+    button {
+      background: #4CAF50;
+      color: white;
+      border: none;
+      cursor: pointer;
+    }
+    button:hover {
+      background: #45a049;
+    }
+  </style>
 </head>
 <body>
-    <header>
-        <h1>Привет!</h1>
-        <p>Добро пожаловать на мой сайт</p>
-    </header>
 
-    <main>
-        <section>
-            <h2>Обо мне</h2>
-            <p>Я интересуюсь спортом и музыкой. Мои главные увлечения — это бокс и игра на музыкальных инструментах.</p>
-        </section>
+  <form id="myForm">
+    <h2>Оставьте свои данные</h2>
+    <input name="name" type="text" placeholder="Ваше имя" required>
+    <input name="phone" type="tel" placeholder="Телефон" required>
+    <button type="submit">Отправить</button>
+    <p id="status" style="color: green; margin-top: 10px;"></p>
+  </form>
 
-        <section>
-            <h2>Бокс</h2>
-            <p>Бокс помогает мне быть сильным, выносливым и дисциплинированным. Я тренируюсь регулярно и люблю соревновательный дух этого вида спорта.</p>
-        </section>
+  <script>
+    const form = document.getElementById("myForm");
+    const status = document.getElementById("status");
 
-        <section>
-            <h2>Музыкальные инструменты</h2>
-            <p>Музыка — моя душа. Я играю на различных инструментах и получаю удовольствие от создания мелодий и ритмов.</p>
-        </section>
-    </main>
+    form.addEventListener("submit", function(e) {
+      e.preventDefault();
+      const formData = new FormData(form);
 
-    <footer>
-        <p>© 2025 Ерасыл. Все права защищены.</p>
-    </footer>
+      fetch("https://script.google.com/macros/s/AKfycbzoWno_118gaqNi0DwY0z9DHvbe9CJT4Y9bzO4IaYxp3iATJsOtllBs4wYuxtuEPH_4/exec", {
+        method: "POST",
+        body: formData
+      })
+      .then(res => res.text())
+      .then(data => {
+        status.textContent = "Данные успешно отправлены!";
+        form.reset();
+      })
+      .catch(err => {
+        status.textContent = "Ошибка при отправке данных.";
+        status.style.color = "red";
+        console.error(err);
+      });
+    });
+  </script>
+
 </body>
 </html>
